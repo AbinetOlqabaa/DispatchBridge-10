@@ -1,6 +1,6 @@
 # Build State — Business Dispatch & Delivery Reconciliation (DispatchBridge)
 
-- **Last Updated:** 2026-11-01T13:25:00-08:00
+- **Last Updated:** 2026-11-01T14:04:00-08:00
 - **Runtime / Platform:** Node.js v22.14.0 on Linux container with Express 4 backend & Vite 8 React 19 Frontend. Configured as an installable mobile-first Progressive Web App (PWA). *Note: Native Android build tooling (Gradle / Android SDK) is not supported in this runtime environment.*
 - **Stack:**
   - Backend: Node.js, Express 4, TypeScript, HMAC SHA-256 session tokens, timing-safe one-time bootstrap tokens, Fayda e-ID verification adapter, OTP gateway adapter, in-memory domain adapter (`sandboxStore`) with full multi-tenant isolation.
@@ -18,7 +18,7 @@
 | Phase 3 | `.ai/03_AUTH_AND_AUTHORIZATION.md` | **COMPLETE** | One-time random bootstrap secret (`/api/auth/bootstrap-superadmin`), HMAC signed session tokens, multi-tenant RBAC, quick role sandbox switcher for testing. |
 | Phase 4 | `.ai/04_DISPATCH_AND_RECONCILIATION.md` | **COMPLETE** | 2-step dispatch creation (draft + pre-submit review), unguessable share tokens (`/?token=...`), tamper-resistant immutable quantity enforcement, line-level discrepancy reporting (shortage, damaged, loss), signoffs, sender acknowledgement/resolution. |
 | Phase 5 | `.ai/05_NOTIFICATIONS_AND_AUDIT.md` | **COMPLETE** | Real-time in-app notification drawer with unread counter & read tracking; immutable audit trail logging actor, role, correlation ID, and metadata for every mutation. |
-| Phase 6 | `.ai/06_TABLET_FIRST_UI_UX_AND_ACCESSIBILITY.md` | **COMPLETE** | Comprehensive tablet portrait (768x1024, 820x1180) & landscape (1024x768, 1180x820) optimizations. Dedicated `TabletSidebar` for `md:landscape:flex xl:hidden`, top horizontal Tablet Navigation Strip scoped to `md:flex md:landscape:hidden xl:hidden`, minimum 44x44px touch targets across all interactive controls, balanced 2-column card wrapping, container-bounded tables with enhanced high-contrast scrollbars, and clean desktop layout with `md:landscape:flex-row xl:flex-col` + `xl:block` Navbar. |
+| Phase 6 | `.ai/06_TABLET_FIRST_UI_UX_AND_ACCESSIBILITY.md` | **COMPLETE** | Comprehensive tablet portrait (768x1024, 820x1180) & landscape (1024x768, 1180x820) optimizations. Landscape orientation mounts dedicated `TabletSidebar` with full navigation, language, theme, and profile controls. Portrait orientation mounts top `Navbar` with horizontal scrolling navigation strip and visual right fade indicator. Tables bounded with responsive cell padding and high-contrast scrollbars. Minimum 44x44px touch targets across all interactive controls. |
 | Phase 7 | `.ai/07_SECURITY_PRIVACY_AND_FAILURES.md` | **COMPLETE** | Strict cross-tenant isolation on store and route levels (HTTP 403 on mismatched tenant/partner access), timingSafeEqual constant-time comparisons, idempotency key deduplication. |
 | Phase 8 | `.ai/08_TESTING_AND_ACCEPTANCE.md` | **COMPLETE** | 44 automated unit, security, integration, identity, and localization acceptance tests passing with 0 failures (`npm test`). `tsc --noEmit` passing with 0 type errors. |
 | Phase 9 | `.ai/09_RELEASE_CHECKLIST.md` | **COMPLETE** | Release checklist evaluated honestly. Verdict: **READY FOR STAGING**. |
@@ -189,14 +189,19 @@ $ npm test
     - `src/components/dispatches/BulkUploadModal.tsx`: Localized CSV format, empty file, and import success messages.
     - `src/pages/dashboards/BusinessOwnerDashboard.tsx` & `src/pages/dispatches/DispatchListPage.tsx`: Localized error fallback messages.
 - **Tablet Portrait, Tablet Landscape & Desktop Responsive Layout (`App.tsx`, `Navbar.tsx`, `TabletSidebar.tsx`)**:
-  - Updated `App.tsx` layout classes:
-    - Root container: `flex flex-col md:landscape:flex-row xl:flex-col pb-20 md:pb-8 md:landscape:pb-0 xl:pb-8`
-    - Top `Navbar`: `<div className="md:landscape:hidden xl:block">` ensuring Navbar renders properly on desktop (>= 1280px) and tablet portrait, while tablet landscape viewports (1024x768, 1180x820) cleanly render the dedicated `TabletSidebar`.
-    - Main container: max-width containment with zero page-level horizontal overflow (`scrollWidth === innerWidth`).
+  - Unified landscape navigation layout: whenever the viewport is in landscape orientation (`md:landscape:flex`), the dedicated left `TabletSidebar` is mounted cleanly without duplicate top navbars, maximizing vertical workspace on both tablet landscape (1024x768, 1180x820) and desktop screens.
+  - Enhanced tablet portrait navigation strip: added a subtle right-edge scroll affordance gradient to indicate swipeable/scrollable tabs for wider menu sets.
+  - `src/pages/team/TeamPage.tsx`: Table minimum width set to `min-w-full sm:min-w-[620px]` with adjusted `px-3 sm:px-4` cell padding, eliminating right-column clipping on 768px tablet portrait.
+  - `src/pages/dashboards/SuperAdminDashboard.tsx`: User oversight table minimum width set to `min-w-[760px] lg:min-w-full` with responsive padding.
+  - `src/pages/dashboards/BusinessOwnerDashboard.tsx`: Made dispatch references (`d.dispatchNumber`) clickable buttons with hover underlines for one-tap navigation on tablets.
+  - `src/pages/partners/PartnersPage.tsx`: Partner card action button bound directly to `action.create_dispatch` for accurate multi-lingual rendering.
+- **Visual & Browser Verification (`playwright-cli`)**:
+  - Verified rendered layouts via headless Chromium at 390x844 (mobile portrait), 768x1024 (tablet portrait), 1024x768 (tablet landscape), and 1440x900 (desktop).
+  - Verified interactive states: Owner dashboard analytics, Recent Outbound Dispatches, Dispatch Detail (with live SVG route map, telemetry HUD, cargo manifest table), Partners grid, Locations list, Reports & Analytics scorecard, Team & Members list, Audit Trail filter suite, and Super Admin User Governance.
 - **Build & Test Verification**:
+  - `npm test` (`tsx test/runTests.ts`): **44/44 tests passed with 0 failures** across unit, security, integration, identity, and linguistic integrity suites.
   - `npm run lint` (`tsc --noEmit`): 0 errors.
   - `compile_applet`: Build succeeded.
-  - `npm test` (`tsx test/runTests.ts`): **44/44 tests passed with 0 failures** across unit, security, integration, identity, and linguistic integrity suites.
 
 ---
 

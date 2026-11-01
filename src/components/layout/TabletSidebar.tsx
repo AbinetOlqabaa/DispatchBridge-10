@@ -111,8 +111,8 @@ export const TabletSidebar: React.FC<TabletSidebarProps> = ({
   return (
     <aside
       ref={sidebarRef}
-      className="hidden md:landscape:flex xl:hidden flex-col w-64 shrink-0 bg-slate-900/95 border-r border-slate-800 h-screen sticky top-0 z-30 select-none shadow-xl"
-      aria-label="Tablet Landscape Navigation Sidebar"
+      className="hidden md:landscape:flex flex-col w-64 shrink-0 bg-slate-900/95 border-r border-slate-800 h-screen sticky top-0 z-30 select-none shadow-xl"
+      aria-label="Landscape Navigation Sidebar"
     >
       {/* Brand Header */}
       <div className="p-4 border-b border-slate-800 shrink-0">

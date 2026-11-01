@@ -154,8 +154,8 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:landscape:flex-row xl:flex-col font-sans selection:bg-indigo-500 selection:text-white pb-20 md:pb-8 md:landscape:pb-0 xl:pb-8 w-full max-w-full overflow-x-hidden">
-      {/* Tablet Landscape Dedicated Left Sidebar */}
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:landscape:flex-row font-sans selection:bg-indigo-500 selection:text-white pb-20 md:pb-8 md:landscape:pb-0 w-full max-w-full overflow-x-hidden">
+      {/* Landscape Navigation Sidebar (Tablet Landscape & Desktop) */}
       <TabletSidebar
         currentTab={currentTab}
         onSelectTab={(tab) => {
@@ -172,8 +172,8 @@ function MainApp() {
 
       {/* Main Content Column */}
       <div className="flex-1 min-w-0 flex flex-col w-full max-w-full overflow-x-hidden">
-        {/* Top Navigation on Mobile, Tablet Portrait, and Desktop */}
-        <div className="md:landscape:hidden xl:block">
+        {/* Top Navigation on Portrait (Mobile & Tablet Portrait) */}
+        <div className="md:landscape:hidden">
           <Navbar
             currentTab={currentTab}
             onSelectTab={(tab) => {

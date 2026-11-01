@@ -450,25 +450,28 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Tablet Portrait First-Class Navigation Strip (Tablet Landscape uses TabletSidebar) */}
-      <div className="hidden md:flex md:landscape:hidden xl:hidden border-t border-slate-800/80 bg-slate-900/95 px-2.5 sm:px-4 py-1.5 items-center gap-1.5 overflow-x-auto scrollbar-thin w-full shadow-inner">
-        {navItems.filter((i) => i.show).map((item) => {
-          const Icon = item.icon;
-          const isActive = currentTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onSelectTab(item.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] shrink-0 ${
-                isActive
-                  ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5 shrink-0 text-sky-400" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
+      <div className="relative hidden md:block md:landscape:hidden xl:hidden border-t border-slate-800/80 bg-slate-900/95 shadow-inner">
+        <div className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 overflow-x-auto scrollbar-thin w-full">
+          {navItems.filter((i) => i.show).map((item) => {
+            const Icon = item.icon;
+            const isActive = currentTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => onSelectTab(item.id)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all cursor-pointer min-h-[44px] shrink-0 ${
+                  isActive
+                    ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5 shrink-0 text-sky-400" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900 to-transparent" />
       </div>
 
       {/* Mobile Menu Dropdown */}

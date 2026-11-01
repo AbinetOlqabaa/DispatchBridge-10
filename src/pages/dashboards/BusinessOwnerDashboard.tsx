@@ -415,7 +415,15 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
             <tbody className="divide-y divide-slate-800/60">
               {dispatches.slice(0, 5).map((d) => (
                 <tr key={d.id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="px-3 py-3 font-mono font-semibold text-indigo-300 whitespace-nowrap">{d.dispatchNumber}</td>
+                  <td className="px-3 py-3 font-mono font-semibold text-indigo-300 whitespace-nowrap">
+                    <button
+                      onClick={() => onSelectDispatch(d.id)}
+                      className="hover:underline text-indigo-300 hover:text-indigo-200 cursor-pointer text-left"
+                      title={t('action.details', 'View dispatch details')}
+                    >
+                      {d.dispatchNumber}
+                    </button>
+                  </td>
                   <td className="px-3 py-3 text-slate-200">
                     <div className="font-medium">{t(d.partnerName)}</div>
                     <div className="text-[11px] text-slate-500 truncate max-w-xs">{d.destinationSnapshot.address}</div>

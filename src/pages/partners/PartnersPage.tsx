@@ -168,7 +168,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ onCreateDispatchWith
                 className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 cursor-pointer mt-3"
               >
                 <Truck className="w-3.5 h-3.5 text-sky-400" />
-                <span>{t('rec.quick_dispatch', 'Create Dispatch to Partner')}</span>
+                <span>{t('action.create_dispatch', 'Create Dispatch')}</span>
               </button>
             )}
           </div>
