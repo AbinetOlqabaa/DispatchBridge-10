@@ -1,6 +1,6 @@
 # Build State — Business Dispatch & Delivery Reconciliation (DispatchBridge)
 
-- **Last Updated:** 2026-11-01T14:04:00-08:00
+- **Last Updated:** 2026-11-01T14:22:00-08:00
 - **Runtime / Platform:** Node.js v22.14.0 on Linux container with Express 4 backend & Vite 8 React 19 Frontend. Configured as an installable mobile-first Progressive Web App (PWA). *Note: Native Android build tooling (Gradle / Android SDK) is not supported in this runtime environment.*
 - **Stack:**
   - Backend: Node.js, Express 4, TypeScript, HMAC SHA-256 session tokens, timing-safe one-time bootstrap tokens, Fayda e-ID verification adapter, OTP gateway adapter, in-memory domain adapter (`sandboxStore`) with full multi-tenant isolation.
@@ -188,16 +188,23 @@ $ npm test
     - `src/pages/dispatches/CreateDispatchModal.tsx`: Localized partner selection and cargo line item error messages.
     - `src/components/dispatches/BulkUploadModal.tsx`: Localized CSV format, empty file, and import success messages.
     - `src/pages/dashboards/BusinessOwnerDashboard.tsx` & `src/pages/dispatches/DispatchListPage.tsx`: Localized error fallback messages.
-- **Tablet Portrait, Tablet Landscape & Desktop Responsive Layout (`App.tsx`, `Navbar.tsx`, `TabletSidebar.tsx`)**:
+- **Tablet Portrait, Tablet Landscape & Desktop Responsive Layout (`App.tsx`, `Navbar.tsx`, `TabletSidebar.tsx`, `LocationsPage.tsx`, `PartnersPage.tsx`)**:
   - Unified landscape navigation layout: whenever the viewport is in landscape orientation (`md:landscape:flex`), the dedicated left `TabletSidebar` is mounted cleanly without duplicate top navbars, maximizing vertical workspace on both tablet landscape (1024x768, 1180x820) and desktop screens.
   - Enhanced tablet portrait navigation strip: added a subtle right-edge scroll affordance gradient to indicate swipeable/scrollable tabs for wider menu sets.
   - `src/pages/team/TeamPage.tsx`: Table minimum width set to `min-w-full sm:min-w-[620px]` with adjusted `px-3 sm:px-4` cell padding, eliminating right-column clipping on 768px tablet portrait.
   - `src/pages/dashboards/SuperAdminDashboard.tsx`: User oversight table minimum width set to `min-w-[760px] lg:min-w-full` with responsive padding.
   - `src/pages/dashboards/BusinessOwnerDashboard.tsx`: Made dispatch references (`d.dispatchNumber`) clickable buttons with hover underlines for one-tap navigation on tablets.
-  - `src/pages/partners/PartnersPage.tsx`: Partner card action button bound directly to `action.create_dispatch` for accurate multi-lingual rendering.
+  - `src/pages/partners/PartnersPage.tsx`: Partner card action button bound directly to `action.create_dispatch` for accurate multi-lingual rendering; Add Partner modal bounded with `max-h-[90vh] overflow-y-auto scrollbar-thin` preventing form cut-off on short tablet viewports.
+  - `src/pages/locations/LocationsPage.tsx`: Add Origin Terminal Dock modal bounded with `max-h-[90vh] overflow-y-auto scrollbar-thin` ensuring full keyboard access and unclipped submission buttons on landscape tablets.
 - **Visual & Browser Verification (`playwright-cli`)**:
-  - Verified rendered layouts via headless Chromium at 390x844 (mobile portrait), 768x1024 (tablet portrait), 1024x768 (tablet landscape), and 1440x900 (desktop).
-  - Verified interactive states: Owner dashboard analytics, Recent Outbound Dispatches, Dispatch Detail (with live SVG route map, telemetry HUD, cargo manifest table), Partners grid, Locations list, Reports & Analytics scorecard, Team & Members list, Audit Trail filter suite, and Super Admin User Governance.
+  - Verified rendered layouts via headless Chromium across all 6 required viewports with 0 page-level horizontal overflow (`scrollWidth === innerWidth`):
+    - Mobile portrait: `390x844` (`docScrollWidth: 390`, `overflow: false`)
+    - Tablet portrait: `768x1024` (`docScrollWidth: 768`, `overflow: false`)
+    - Tablet portrait (iPad Air/Pro): `820x1180` (`docScrollWidth: 820`, `overflow: false`)
+    - Tablet landscape: `1024x768` (`docScrollWidth: 1024`, `overflow: false`, `sidebarWidth: 256`, `navbarWidth: 0`)
+    - Tablet landscape (iPad Pro): `1180x820` (`docScrollWidth: 1180`, `overflow: false`, `sidebarWidth: 256`, `navbarWidth: 0`)
+    - Desktop: `1440x900` (`docScrollWidth: 1440`, `overflow: false`, `sidebarWidth: 256`, `navbarWidth: 0`)
+  - Verified interactive states: Owner dashboard analytics, Recent Outbound Dispatches, Dispatch Detail (with live SVG route map, telemetry HUD, cargo manifest table), Partners directory & modal, Locations list & modal, Reports & Analytics scorecard, Team & Members list, Audit Trail filter suite, Super Admin User Governance, and Public Partner Delivery Manifest (`/?token=...`) with 5-language native script switcher.
 - **Build & Test Verification**:
   - `npm test` (`tsx test/runTests.ts`): **44/44 tests passed with 0 failures** across unit, security, integration, identity, and linguistic integrity suites.
   - `npm run lint` (`tsc --noEmit`): 0 errors.

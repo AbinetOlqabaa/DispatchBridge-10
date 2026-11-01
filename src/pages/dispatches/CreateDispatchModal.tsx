@@ -490,7 +490,7 @@ export const CreateDispatchModal: React.FC<CreateDispatchModalProps> = ({
                     {driverPhone && <div className="text-[11px] text-slate-400">{driverPhone}</div>}
                   </div>
                   <div>
-                    <span className="text-slate-500 font-semibold block">{t('dispatch.total_manifest_qty')}:</span>
+                    <span className="text-slate-500 font-semibold block">{t('dispatch.total_manifest_qty')}</span>
                     <div className="font-mono font-bold text-indigo-300 text-sm">
                       {t('dispatch.units_across_lines', { units: totalUnits, lines: lines.length })}
                     </div>
